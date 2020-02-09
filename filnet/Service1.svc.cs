@@ -14,17 +14,10 @@ namespace filnet
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class Service1
     {
-        // To use HTTP GET, add [WebGet] attribute. (Default ResponseFormat is WebMessageFormat.Json)
-        // To create an operation that returns XML,
-        //     add [WebGet(ResponseFormat=WebMessageFormat.Xml)],
-        //     and include the following line in the operation body:
-        //         WebOperationContext.Current.OutgoingResponse.ContentType = "text/xml";
-
-
         private static List<UserData> Users = new List<UserData>(
        new UserData[] {
-        new UserData("Peter", "peter@gmail.com", "12345"),
-        new UserData("John", "john@gmail.com", "abcd123"),
+        new UserData("Peter", "peter", "12345"),
+        new UserData("Fil", "fil", "12345"),
         new UserData("Mary", "mary@gmail.com", "54321"),
         new UserData("Bob", "bob@gmail.com", "bobbob")
        });
@@ -54,22 +47,10 @@ namespace filnet
             if (user != null)
             {
                 user.hash = GenerateSHA256Hash(DateTime.Now.ToString());
-                return new LoginResponse(ResponseStatus.Successed, user.id, user.name, user.hash, user.totalpoints, user.totaldeaths);
+                return new LoginResponse(ResponseStatus.Successed, user.id, user.name, user.hash, user.totalbeastpoints, user.totalbeastdeaths, user.totalmechapoints, user.totalmechadeaths);
             }
             return new LoginResponse(ResponseStatus.Failed, -1, "", "",
-            -1, -1);    
-            //foreach (UserData udata in Users)
-            //{
-            //    if ((udata.email == email) && (udata.password == password))
-            //    {
-            //        udata.hash = GenerateSHA256Hash(DateTime.Now.ToString());
-            //        return new LoginResponse(ResponseStatus.Successed, udata.id,
-            //        udata.name, udata.hash, udata.totalpoints,
-            //        udata.totaldeaths);
-            //    }
-            //}
-            //    return new LoginResponse(ResponseStatus.Failed, -1, "whatahfha", "",
-            //    -1, -1);
+            -1, -1, -1, -1);    
         }
 
         [WebGet(UriTemplate = "/GetUserInfo?user={id}", ResponseFormat =
@@ -82,26 +63,26 @@ namespace filnet
             {
                 if (udata.id == uid)
                 {
-
                     return new UserInfoResponse(ResponseStatus.Successed,
-                    udata.name, udata.totalpoints, udata.totaldeaths);
+                    udata.name, udata.totalbeastpoints, udata.totalbeastdeaths, 
+                    udata.totalmechapoints, udata.totalmechadeaths);
                 }
             }
-            return new UserInfoResponse(ResponseStatus.Failed, "", -1, -1);
+            return new UserInfoResponse(ResponseStatus.Failed, "", -1, -1, -1, -1);
         }
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
-        UriTemplate = "/AddPoint", ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/AddBeastPoint", ResponseFormat = WebMessageFormat.Json,
         BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
-        public PostResponse AddUserpoint(string userid, string hash)
+        public PostResponse AddUserBeastpoint(string userid, string hash)
         {
             int uid = int.Parse(userid);
             foreach (UserData udata in Users)
             {
                 if ((udata.id == uid) && (udata.hash.Equals(hash)))
                 {
-                    udata.totalpoints++;
+                    udata.totalbeastpoints++;
                     return new PostResponse(ResponseStatus.Successed);
                 }
             }
@@ -109,23 +90,57 @@ namespace filnet
         }
 
         [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
-        UriTemplate = "/AddDeath", ResponseFormat = WebMessageFormat.Json,
+        UriTemplate = "/AddMechaPoint", ResponseFormat = WebMessageFormat.Json,
         BodyStyle = WebMessageBodyStyle.Wrapped)]
         [OperationContract]
-        public PostResponse AddUserDeath(string userid, string hash)
+        public PostResponse AddUserMechapoint(string userid, string hash)
         {
             int uid = int.Parse(userid);
             foreach (UserData udata in Users)
             {
                 if ((udata.id == uid) && (udata.hash.Equals(hash)))
                 {
-                    udata.totaldeaths++;
+                    udata.totalmechapoints++;
                     return new PostResponse(ResponseStatus.Successed);
                 }
             }
             return new PostResponse(ResponseStatus.Failed);
         }
 
-        // Add more operations here and mark them with [OperationContract]
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
+        UriTemplate = "/AddBeastDeath", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [OperationContract]
+        public PostResponse AddUserBeastDeath(string userid, string hash)
+        {
+            int uid = int.Parse(userid);
+            foreach (UserData udata in Users)
+            {
+                if ((udata.id == uid) && (udata.hash.Equals(hash)))
+                {
+                    udata.totalbeastdeaths++;
+                    return new PostResponse(ResponseStatus.Successed);
+                }
+            }
+            return new PostResponse(ResponseStatus.Failed);
+        }
+
+        [WebInvoke(Method = "POST", RequestFormat = WebMessageFormat.Json,
+        UriTemplate = "/AddMechaDeath", ResponseFormat = WebMessageFormat.Json,
+        BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [OperationContract]
+        public PostResponse AddUserMechaDeath(string userid, string hash)
+        {
+            int uid = int.Parse(userid);
+            foreach (UserData udata in Users)
+            {
+                if ((udata.id == uid) && (udata.hash.Equals(hash)))
+                {
+                    udata.totalmechadeaths++;
+                    return new PostResponse(ResponseStatus.Successed);
+                }
+            }
+            return new PostResponse(ResponseStatus.Failed);
+        }
     }
 }

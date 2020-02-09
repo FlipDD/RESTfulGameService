@@ -10,8 +10,10 @@ namespace filnet
         public string name;
         public string email;
         public string password;
-        public int totalpoints;
-        public int totaldeaths;
+        public int totalbeastpoints;
+        public int totalbeastdeaths;
+        public int totalmechapoints;
+        public int totalmechadeaths;
         public string hash;
         public UserData(string nname, string nemail, string npass)
         {
@@ -19,9 +21,11 @@ namespace filnet
             name = nname;
             email = nemail;
             password = npass;
-            totalpoints = 0;
-            totaldeaths = 0;
-            hash = "";
+            totalbeastpoints = 0;
+            totalbeastdeaths = 0;
+            totalmechapoints = 0;
+            totalmechadeaths = 0;
+        hash = "";
         }
     }
 
@@ -34,17 +38,21 @@ namespace filnet
         [DataMember] public int userid;
         [DataMember] public string name;
         [DataMember] public string hash;
-        [DataMember] public int totalpoints;
-        [DataMember] public int totaldeaths;
+        [DataMember] public int totalbeastpoints;
+        [DataMember] public int totalbeastdeaths;
+        [DataMember] public int totalmechapoints;
+        [DataMember] public int totalmechadeaths;
         public LoginResponse(ResponseStatus nstatus, int nuserid, string
-        nname, string nhash, int ntotalpoints, int ntotaldeaths)
+        nname, string nhash, int ntotalbeastpoints, int ntotalbeastdeaths, int ntotalmechapoints, int ntotalmechadeaths)
         {
             status = nstatus;
             userid = nuserid;
             name = nname;
             hash = nhash;
-            totalpoints = ntotalpoints;
-            totaldeaths = ntotaldeaths;
+            totalbeastpoints = ntotalbeastpoints;
+            totalbeastdeaths = ntotalbeastdeaths;
+            totalmechapoints = ntotalmechapoints;
+            totalmechadeaths = ntotalmechadeaths;
         }
     }
 
@@ -53,15 +61,18 @@ namespace filnet
     {
         [DataMember] public ResponseStatus status;
         [DataMember] public string name;
-        [DataMember] public int totalpoints;
-        [DataMember] public int totaldeaths;
-        public UserInfoResponse(ResponseStatus nstatus, string nname, int
-        ntotalpoints, int ntotaldeaths)
+        [DataMember] public int totalbeastpoints;
+        [DataMember] public int totalbeastdeaths;
+        [DataMember] public int totalmechapoints;
+        [DataMember] public int totalmechadeaths;
+        public UserInfoResponse(ResponseStatus nstatus, string nname, int ntotalbeastpoints, int ntotalbeastdeaths, int ntotalmechapoints, int ntotalmechadeaths)
         {
             status = nstatus;
             name = nname;
-            totalpoints = ntotalpoints;
-            totaldeaths = ntotaldeaths;
+            totalbeastpoints = ntotalbeastpoints;
+            totalbeastdeaths = ntotalbeastdeaths;
+            totalmechapoints = ntotalmechapoints;
+            totalmechadeaths = ntotalmechadeaths;
         }
     }
 
